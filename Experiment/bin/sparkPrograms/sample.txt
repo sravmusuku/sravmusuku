@@ -1,0 +1,5 @@
+Spark is a powerful distributed computing framework.
+It is widely used for big data processing and analytics.
+Apache Spark supports multiple languages like Java, Scala, and Python.
+RDD (Resilient Distributed Dataset) is the core abstraction in Spark.
+Spark can process data from various sources including HDFS, S3, and local files.
