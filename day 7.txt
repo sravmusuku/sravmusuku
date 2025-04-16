@@ -1,0 +1,132 @@
+
+
+
+
+Access Modifiers - 3types
+1. Public-through out the world(package) and other packages
+2. Private-all to the class
+3. Protected-through out the package
+POPS -Prior to OOPS - procedural programming (Focuses on programming)
+=>Lower case to Uppercase
+pseudocode:
+prasanna -> String to character array
+Char [] word
+iterating to array word
+Take each character and subtract it with 32 to get equalvient ASCII value for Captial letter
+from character array convert into string
+=> Need a method called ToUppercase, this method should take input argument as string and return the converted
+ upper case as string, this method should accessable inside the package and outside.
+ASCII - Character encoding Standard - American stanadard Code for information interchange
+7bit code for 127 characters
+logic: ASCII-32
+String vs StringBuilder
+StringBuilder - Faster - Mutable - Minimize the memory oversize -(perferred choice - performance)
+String - Hash codes - immutable
+RDD- Immutable
+Object orientated - object - data and methods all contains inside object - bottom to up approach - restricted to
+access class or methods due to access modifiers
+Procedural programming - top to down approach - no restriction to access
+Java OOPs principles:
+any class method in java should have signature starting with
+<<Access modifier>> <<return data type (non-value should be mentioned with void)>> <<Method name>>(Arguments)
+To return multiple values we can by array, by string it can return single value.
+RDD - is not the only way to store values we can from data frames
+Data frames - plenty of functions available in data frame
+Spark. SQL - to write query - for fetching data
+Spark view- temp view, global view
+Spark -> dataset, data frames
+java -> data structures- List, Arraylist, Hashset(to set unique value),Hashmap
+Git hub steps and commands:
+step-1: clone repository
+git clone "URL"  (from web UI of git browser ->code->copy https URL of repository)
+step-2: After authorization ensure to execute below to two commands
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+step-3: pull the latest files from repository
+git pull
+copy the the local respective file or folder to where the git repository is clone
+step-4: check status
+git status
+step-5: add all local file or folders to the git repository
+git add .
+step-6: commit the changes to git resp
+git commit -m "Your own massage"
+step-7: Push the changes
+git push
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+github folder
+git download 
+
+Sure! Let's break down each command step by step:
+
+1. **`git clone https://github.com/cts-workshopsandtrgs/JavaSparkKafka-Trg.git`**: 
+This command clones the repository from GitHub to your local machine.
+ It creates a directory named `JavaSparkKafka-Trg` and copies all the files from the repository into this directory.
+
+2. **`ls`**: This command lists all files and directories in the current directory.
+ After cloning, it will show the contents of the directory where you executed the command.
+
+3. **`cd JavaSparkKafka-Trg/`**: This changes the current directory to 
+`JavaSparkKafka-Trg`, the directory created by the `git clone` command.
+
+4. **`git status`**: This command shows the current status of the repository. 
+It tells you which files are staged for commit, which are modified, and which are untracked.
+
+5. **`git pull`**: This command fetches and merges changes from the remote repository to your local repository.
+ It ensures your local copy is up-to-date with the latest changes from GitHub.
+
+6. **`git add .`**: This stages all changes (new files, modifications, deletions) 
+in the current directory for the next commit.
+
+7. **`git status`**: Running this again shows the status of the repository after staging the changes. 
+It will list the files that are ready to be committed.
+
+8. **`git commit -m "Handson_lab done during 16th of april"`**: 
+This commits the staged changes to the local repository with a message describing the changes.
+ The message here is `"Handson_lab done during 16th of april"`.
+
+9. **`git config --global user.email "pkondoju564@gmail.com"`**:
+ This sets your email address for Git globally on your machine. It will be used in your commits.
+
+10. **`git config --global user.name "prasannakondoju184"`**:
+ This sets your name for Git globally on your machine. It will be used in your commits.
+
+11. **`git commit -m "Handson_lab done during 16th of april"`**: 
+This is a repeat of the earlier commit command, likely to ensure the commit message is properly set.
+
+12. **`git push`**: This command pushes your local commits to the remote repository on GitHub. 
+It updates the remote repository with your changes.
+
+Essentially, you're cloning a repository, making changes, committing those changes, 
+and then pushing them back to the remote repository. This is a typical workflow for collaborating on projects using Git. 
+Do you have any specific questions about any of these steps?
