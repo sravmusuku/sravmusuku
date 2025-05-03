@@ -1,0 +1,8 @@
+
+{"account_id": "5555", "amount": 200, "location": "Delhi", "timestamp": "2025-05-01T09:00:00"}
+{"account_id": "5555", "amount": 300, "location": "Delhi", "timestamp": "2025-05-01T09:00:00"}
+{"account_id": "5555", "amount": 150, "location": "Delhi", "timestamp": "2025-05-01T09:00:00"}
+{"account_id": "5555", "amount": 180, "location": "Delhi", "timestamp": "2025-05-01T09:00:00"}
+{"account_id": "5556", "amount": 15000, "location": "Delhi", "timestamp": "2025-05-01T09:04:00"}
+{"account_id": "5556", "amount": 1500, "location": "Delhi", "timestamp": "2025-05-01T09:05:00"}
+
