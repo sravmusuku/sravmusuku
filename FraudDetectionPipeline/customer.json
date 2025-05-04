@@ -1,0 +1,17 @@
+[
+  {"account_id": "C001", "name": "Alice Johnson", "email": "alice.johnson@example.com", "phone_number": "123-456-7890", "address": "123 Elm St, NY", "account_type": "Checking", "balance": 15000, "status": "Active"},
+  {"account_id": "C002", "name": "Bob Smith", "email": "bob.smith@example.com", "phone_number": "234-567-8901", "address": "456 Oak St, CA", "account_type": "Savings", "balance": 25000, "status": "Active"},
+  {"account_id": "C003", "name": "Charlie Brown", "email": "charlie.brown@example.com", "phone_number": "345-678-9012", "address": "789 Pine St, TX", "account_type": "Business", "balance": 50000, "status": "Active"},
+  {"account_id": "C004", "name": "David Lee", "email": "david.lee@example.com", "phone_number": "456-789-0123", "address": "159 Maple St, FL", "account_type": "Checking", "balance": 12000, "status": "Active"},
+  {"account_id": "C005", "name": "Eve Carter", "email": "eve.carter@example.com", "phone_number": "567-890-1234", "address": "753 Birch St, WA", "account_type": "Savings", "balance": 22000, "status": "Active"},
+  {"account_id": "C006", "name": "Frank Martin", "email": "frank.martin@example.com", "phone_number": "678-901-2345", "address": "951 Cedar St, IL", "account_type": "Business", "balance": 48000, "status": "Active"},
+  {"account_id": "C007", "name": "Grace Parker", "email": "grace.parker@example.com", "phone_number": "789-012-3456", "address": "357 Spruce St, PA", "account_type": "Checking", "balance": 9000, "status": "Active"},
+  {"account_id": "C008", "name": "Henry Adams", "email": "henry.adams@example.com", "phone_number": "890-123-4567", "address": "258 Willow St, MI", "account_type": "Savings", "balance": 19000, "status": "Active"},
+  {"account_id": "C009", "name": "Ivy Reynolds", "email": "ivy.reynolds@example.com", "phone_number": "901-234-5678", "address": "654 Redwood St, NV", "account_type": "Business", "balance": 60000, "status": "Active"},
+  {"account_id": "C010", "name": "Jack Wilson", "email": "jack.wilson@example.com", "phone_number": "012-345-6789", "address": "852 Aspen St, CO", "account_type": "Checking", "balance": 11000, "status": "Active"},
+  {"account_id": "C011", "name": "Kathy Taylor", "email": "kathy.taylor@example.com", "phone_number": "123-456-7891", "address": "753 Alder St, AZ", "account_type": "Savings", "balance": 23000, "status": "Active"},
+  {"account_id": "C012", "name": "Leo Jackson", "email": "leo.jackson@example.com", "phone_number": "234-567-8902", "address": "159 Cypress St, OR", "account_type": "Business", "balance": 53000, "status": "Active"},
+  {"account_id": "C013", "name": "Mia Robinson", "email": "mia.robinson@example.com", "phone_number": "345-678-9013", "address": "951 Palm St, GA", "account_type": "Checking", "balance": 14000, "status": "Active"},
+  {"account_id": "C014", "name": "Noah Brooks", "email": "noah.brooks@example.com", "phone_number": "456-789-0124", "address": "654 Fir St, NC", "account_type": "Savings", "balance": 26000, "status": "Active"},
+  {"account_id": "C015", "name": "Olivia White", "email": "olivia.white@example.com", "phone_number": "567-890-1235", "address": "357 Elm St, SC", "account_type": "Business", "balance": 57000, "status": "Active"}
+]
