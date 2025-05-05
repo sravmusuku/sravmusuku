@@ -19,53 +19,58 @@ public class FraudDetector {
     private static final Logger logger = LoggerFactory.getLogger(FraudDetector.class);
 
     public static Dataset<Row> detectFraud(SparkSession spark, Dataset<Row> customers, Dataset<Row> transactions) {
-        logger.info("🔍 Running fraud detection...");
+        logger.info("🔍 Running fraud detection with 5-minute transaction rule...");
 
-        // ✅ Register UDFs for fraud rules
-        spark.udf().register("isHighAmount", (UDF1<Double, Boolean>) amount -> amount != null && amount > 10000,
-                DataTypes.BooleanType);
+        // Register UDFs
+        spark.udf().register("isHighAmount", (UDF1<Double, Boolean>) amount -> amount != null && amount > 10000, DataTypes.BooleanType);
+        spark.udf().register("getReason", (UDF1<Double, String>) amount -> amount != null && amount > 10000 ? "High Value Transaction" : "", DataTypes.StringType);
 
-        spark.udf().register("getReason", (UDF1<Double, String>) amount -> amount != null && amount > 10000 ? "High Value Transaction" : "",
-                DataTypes.StringType);
-
-        // ✅ Define window specification for rapid transaction detection
-        WindowSpec windowSpec = Window.partitionBy("account_id").orderBy("timestamp");
-
-        // ✅ Process transactions with fraud detection logic
+        // ✅ Step 1: Add timestamp as unix format
         Dataset<Row> transactionsProcessed = transactions
-                .withColumn("prev_transaction_time", lag("timestamp", 1).over(windowSpec))
-                .withColumn("time_diff", unix_timestamp(coalesce(col("timestamp"), lit("1970-01-01 00:00:00")))
-                        .minus(unix_timestamp(coalesce(col("prev_transaction_time"), lit("1970-01-01 00:00:00")))))
-                .withColumn("transaction_count_in_window", count("transaction_id").over(windowSpec.rowsBetween(-1, 0)))
-                .withColumn("isRapidTransaction", when(col("transaction_count_in_window").gt(1), true).otherwise(false));
+                .withColumn("timestamp_unix", unix_timestamp(col("timestamp")));
 
-        // ✅ Join customers
+        // ✅ Step 2: Apply range-based window (past 5 minutes for the same account)
+        WindowSpec fiveMinWindow = Window
+                .partitionBy("account_id")
+                .orderBy(col("timestamp_unix"))
+                .rangeBetween(-300, 0); // 5-minute sliding window
+
+        // ✅ Step 3: Count transactions in that window
+        transactionsProcessed = transactionsProcessed
+                .withColumn("txn_count_in_5min", count("transaction_id").over(fiveMinWindow));
+
+        // ✅ Step 4: Join with customers
         Dataset<Row> enrichedTransactions = transactionsProcessed.join(customers, "account_id");
 
-        // ✅ Apply fraud detection rules
+        // ✅ Step 5: Apply fraud rules
         Dataset<Row> flagged = enrichedTransactions
                 .select(
                         col("account_id"),
+                        col("name").alias("customer_name"),
                         col("transaction_id"),
                         col("transaction_type"),
                         col("amount"),
                         col("location"),
                         col("merchant_id"),
-                        when(col("isRapidTransaction")
+                        col("account_type"),
+                        col("customer_status"),
+                        col("timestamp"),
+                        col("txn_count_in_5min"),
+                        when(col("txn_count_in_5min").gt(5)
                                 .or(callUDF("isHighAmount", col("amount"))), true)
                                 .otherwise(false).alias("is_suspicious"),
-                        when(col("isRapidTransaction"), "Rapid Transaction")
-                                .otherwise(when(callUDF("isHighAmount", col("amount")), "High Value Transaction")
-                                        .otherwise("Normal Transaction")).alias("fraud_reason")
+                        when(col("txn_count_in_5min").gt(5), lit("Rapid Transactions"))
+                                .otherwise(when(callUDF("isHighAmount", col("amount")), lit("High Value Transaction"))
+                                        .otherwise(lit("Normal Transaction"))).alias("fraud_reason")
                 );
 
-        // ✅ Log fraud alerts
-        flagged.filter(col("is_suspicious").equalTo(true)).foreach(row -> {
-            logger.warn("⚠️ ALERT: Fraud detected! Account: {}, Amount: ${}, Reason: {}", 
+        // ✅ Log only suspicious transactions
+        flagged.filter("is_suspicious = true").foreach(row -> {
+            logger.warn("⚠️ ALERT: Suspicious transaction detected! Account: {}, Amount: ${}, Reason: {}",
                     row.getAs("account_id"), row.getAs("amount"), row.getAs("fraud_reason"));
         });
 
-        logger.info("✅ Fraud detection completed successfully.");
+        logger.info("✅ Fraud detection completed.");
         return flagged;
     }
 
