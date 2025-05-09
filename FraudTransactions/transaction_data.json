@@ -1,0 +1,51 @@
+[
+    {
+        "TransactionId": "TXN001",
+        "SenderAccount": "ACC1001",
+        "TransactionAmount": 1500,
+        "TransactionType": "Credit",
+        "Timestamp": "2025-05-02T10:00:00"
+    },
+    {
+        "TransactionId": "TXN002",
+        "SenderAccount": "ACC1002",
+        "TransactionAmount": 800,
+        "TransactionType": "Debit",
+        "Timestamp": "2025-05-02T10:02:00"
+    },
+    {
+        "TransactionId": "TXN003",
+        "SenderAccount": "ACC1001",
+        "TransactionAmount": 1200,
+        "TransactionType": "Credit",
+        "Timestamp": "2025-05-02T10:03:30"
+    },
+    {
+        "TransactionId": "TXN004",
+        "SenderAccount": "ACC1003",
+        "TransactionAmount": 500,
+        "TransactionType": "Debit",
+        "Timestamp": "2025-05-02T10:05:00"
+    },
+    {
+        "TransactionId": "TXN005",
+        "SenderAccount": "ACC1001",
+        "TransactionAmount": 200,
+        "TransactionType": "Debit",
+        "Timestamp": "2025-05-02T10:06:00"
+    },
+    {
+        "TransactionId": "TXN006",
+        "SenderAccount": "ACC1001",
+        "TransactionAmount": 300,
+        "TransactionType": "Debit",
+        "Timestamp": "2025-05-02T10:07:00"
+    },
+    {
+        "TransactionId": "TXN007",
+        "SenderAccount": "ACC1001",
+        "TransactionAmount": 100,
+        "TransactionType": "Credit",
+        "Timestamp": "2025-05-02T10:08:00"
+    }
+]
