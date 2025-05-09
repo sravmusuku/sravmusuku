@@ -13,7 +13,7 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
-        logger.info("🚀 Starting full system check...");
+        logger.info(" Starting full system check...");
 
         SparkSession spark = SparkSession.builder()
                 .appName("FraudCheckSystem")
@@ -23,10 +23,10 @@ public class App {
 
         try {
             // Load input data
-            Dataset<Row> customers = Customers.readCustomers(spark, "customer.json");
-            Dataset<Row> transactions = Transactions.readTransactions(spark, "transactions.json");
+            Dataset<Row> customers = Customers.readCustomers(spark, "realistic_customers.json");
+            Dataset<Row> transactions = Transactions.readTransactions(spark, "realistic_transactions.json");
 
-            logger.info("✅ Data loaded successfully!");
+            logger.info("Data loaded successfully!");
 
             // Run fraud detection
             Dataset<Row> flagged = FraudDetector.detectFraud(spark, customers, transactions);
@@ -35,10 +35,10 @@ public class App {
             FraudDetector.saveToDatabase(flagged);
 
         } catch (Exception e) {
-            logger.error("❌ Error in fraud detection process: ", e);
+            logger.error(" Error in fraud detection process: ", e);
         } finally {
             spark.stop();
-            logger.info("✅ System check completed successfully!");
+            logger.info("System check completed successfully!");
         }
     }
 }

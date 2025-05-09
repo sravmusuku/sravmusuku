@@ -1,5 +1,6 @@
 package com.org.example;
 
+
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.expressions.Window;
@@ -8,6 +9,8 @@ import org.apache.spark.sql.types.DataTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -15,16 +18,16 @@ import static org.apache.spark.sql.functions.*;
 
 public class FraudDetector {
 
-    private static final Logger logger = LoggerFactory.getLogger(FraudDetector.class);
+    private static final Logger logger = LoggerFactory.getLogger(FraudDetector.class);    
 
     // UDFs
     private static void registerUDFs(SparkSession spark) {
-        spark.udf().register("isHighAmount", (UDF1<Double, Boolean>) amount -> amount != null && amount > 10000, DataTypes.BooleanType);
-        spark.udf().register("getReason", (UDF1<Double, String>) amount -> amount != null && amount > 10000 ? "High Value Transaction" : "", DataTypes.StringType);
+        spark.udf().register("isHighAmount", (UDF1<Double, Boolean>) amount -> amount != null && amount > 100000, DataTypes.BooleanType);
+        //spark.udf().register("getReason", (UDF1<Double, String>) amount -> amount != null && amount > 100000 ? "High Value Transaction" : "", DataTypes.StringType);
     }
 
     public static Dataset<Row> detectFraud(SparkSession spark, Dataset<Row> customers, Dataset<Row> transactions) {
-        logger.info("🔍 Running fraud detection...");
+        logger.info("Running fraud detection...");
 
         registerUDFs(spark);
 
@@ -34,8 +37,9 @@ public class FraudDetector {
         Dataset<Row> flagged = applyFraudRules(enriched);
 
         logSuspiciousTransactions(flagged);
+        saveToDatabase(flagged);
 
-        logger.info("✅ Fraud detection completed.");
+        logger.info("Fraud detection completed.");
         return flagged;
     }
 
@@ -66,82 +70,76 @@ public class FraudDetector {
                 col("timestamp"),
                 col("txn_count_in_5min"),
                 when(col("txn_count_in_5min").gt(5)
-                        .or(callUDF("isHighAmount", col("amount"))), true).otherwise(false).alias("is_suspicious"),
-                when(col("txn_count_in_5min").gt(5), lit("Rapid Transactions"))
-                        .otherwise(when(callUDF("isHighAmount", col("amount")), lit("High Value Transaction"))
-                                .otherwise(lit("Normal Transaction"))).alias("fraud_reason")
+                        .or(callUDF("isHighAmount", col("amount"))), lit(true))
+                        .otherwise(lit(false)).alias("is_suspicious"),
+                when(col("txn_count_in_5min").gt(5)
+                        .and(callUDF("isHighAmount", col("amount"))), lit("Rapid & High Value Transaction"))
+                .when(col("txn_count_in_5min").gt(5), lit("Rapid Transaction"))
+                .when(callUDF("isHighAmount", col("amount")), lit("High Value Transaction"))
+                .otherwise(lit("Normal Transaction")).alias("fraud_reason")
         );
     }
 
+
     private static void logSuspiciousTransactions(Dataset<Row> flagged) {
-        flagged.filter("is_suspicious = true").foreach(row -> {
+        flagged.filter("is_suspicious = true").collectAsList().forEach(row -> {
             try {
                 String accountId = row.getAs("account_id");
                 Double amount = row.getAs("amount");
                 String reason = row.getAs("fraud_reason");
                 String transactionId = row.getAs("transaction_id");
 
-                logger.warn("⚠️ ALERT: Suspicious transaction detected! Account: {}, Amount: ${}, Reason: {}",
+                logger.warn(" ALERT: Suspicious transaction detected! Account: {}, Amount: ${}, Reason: {}",
                         accountId, amount, reason);
 
                 insertLog("WARN", "Suspicious transaction: $" + amount + ", Reason: " + reason,
                         accountId, transactionId, reason);
             } catch (Exception e) {
-                logger.error("❌ Failed to log suspicious transaction: {}", e.getMessage());
+                logger.error(" Failed to log suspicious transaction: {}", e.getMessage());
             }
         });
     }
 
     public static void saveToDatabase(Dataset<Row> flagged) {
-        logger.info("📁 Saving flagged fraud transactions to PostgreSQL...");
+        logger.info(" Saving flagged fraud transactions to PostgreSQL...");
 
         Dataset<Row> fraudTransactions = flagged.filter(col("is_suspicious").equalTo(true));
         if (fraudTransactions.isEmpty()) {
-            logger.info("✅ No fraudulent transactions to save.");
+            logger.info(" No fraudulent transactions to save.");
             return;
         }
 
-        Properties props = getDatabaseProperties();
-        if (props == null) return;
+        // New Connection Format
+        String pgconnectionUrl = "jdbc:postgresql://ep-delicate-fog-a1i3vqh5-pooler.ap-southeast-1.aws.neon.tech/banking?sslmode=require";
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "banking_owner");
+        connectionProps.put("password", "npg_vEof3I9kFxzn");
+        connectionProps.put("driver", "org.postgresql.Driver");
 
-        String pgUrl = "jdbc:postgresql://ep-fancy-term-a1ddi401-pooler.ap-southeast-1.aws.neon.tech/fraud_detection_db?sslmode=require";
+        String outputTablename = "fraud_Transactions";
 
         try {
             fraudTransactions.write()
                     .option("header", "true")
-                    .mode("append")
-                    .jdbc(pgUrl, "fraud_transactions", props);
+                    .mode(SaveMode.Overwrite)
+                    .jdbc(pgconnectionUrl, outputTablename, connectionProps);
 
-            logger.info("✅ Fraud transactions stored in PostgreSQL.");
+            logger.info(" Fraud transactions stored in PostgreSQL.");
         } catch (Exception e) {
-            logger.error("❌ Error writing to DB: {}", e.getMessage());
+            logger.error(" Error writing to DB: {}", e.getMessage());
         }
-    }
-
-    private static Properties getDatabaseProperties() {
-        String user = System.getenv("DB_USER");
-        String pass = System.getenv("DB_PASS");
-
-        if (user == null || pass == null || user.isEmpty() || pass.isEmpty()) {
-            logger.error("❌ DB credentials are missing. Set DB_USER and DB_PASS env vars.");
-            return null;
-        }
-
-        Properties props = new Properties();
-        props.put("user", user);
-        props.put("password", pass);
-        props.put("driver", "org.postgresql.Driver");
-        return props;
     }
 
     public static void insertLog(String level, String message, String accountId, String transactionId, String reason) {
-        Properties props = getDatabaseProperties();
-        if (props == null) return;
+        Properties props = new Properties();
+        props.put("user", "banking_owner");
+        props.put("password", "npg_vEof3I9kFxzn");
+        props.put("driver", "org.postgresql.Driver");
 
-        String jdbcUrl = "jdbc:postgresql://ep-fancy-term-a1ddi401-pooler.ap-southeast-1.aws.neon.tech/fraud_detection_db?sslmode=require";
+        String jdbcUrl = "jdbc:postgresql://ep-delicate-fog-a1i3vqh5-pooler.ap-southeast-1.aws.neon.tech/banking?sslmode=require";
         String insertSQL = "INSERT INTO fraud_logs (log_level, log_message, account_id, transaction_id, fraud_reason) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(jdbcUrl, props);
+        try (Connection conn = DriverManager.getConnection(jdbcUrl, "banking_owner", "npg_vEof3I9kFxzn");
              PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
 
             stmt.setString(1, level);
@@ -151,8 +149,9 @@ public class FraudDetector {
             stmt.setString(5, reason);
             stmt.executeUpdate();
 
+            logger.info(" Log inserted successfully for transaction ID: {}", transactionId);
         } catch (SQLException e) {
-            logger.error("❌ Failed to insert log: {}", e.getMessage());
+            logger.error(" Failed to insert log: {}", e.getMessage());
         }
     }
 }

@@ -1,16 +1,21 @@
 [
   {"transaction_id": "T001", "account_id": "C001", "amount": 500, "timestamp": "2025-05-03T09:00:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
+  
   {"transaction_id": "T002", "account_id": "C002", "amount": 150000, "timestamp": "2025-05-03T09:05:00Z", "location": "Online", "transaction_type": "Transfer", "merchant_id": "M101", "status": "Success"},
+  {"transaction_id": "T010", "account_id": "C005", "amount": 200000, "timestamp": "2025-05-03T09:20:00Z", "location": "Bank", "transaction_type": "Deposit", "merchant_id": "M103", "status": "Success"},
+  {"transaction_id": "T015", "account_id": "C008", "amount": 175000, "timestamp": "2025-05-03T09:30:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "M104", "status": "Success"},
+  {"transaction_id": "T020", "account_id": "C009", "amount": 250000, "timestamp": "2025-05-03T09:35:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
+  {"transaction_id": "T025", "account_id": "C011", "amount": 180000, "timestamp": "2025-05-03T09:50:00Z", "location": "Online", "transaction_type": "Transfer", "merchant_id": "M105", "status": "Success"},
+  {"transaction_id": "T030", "account_id": "C012", "amount": 220000, "timestamp": "2025-05-03T10:00:00Z", "location": "Online", "transaction_type": "Purchase", "merchant_id": "M106", "status": "Success"},
+  {"transaction_id": "T035", "account_id": "C013", "amount": 140000, "timestamp": "2025-05-03T10:10:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "Unknown", "status": "Success"},
+  {"transaction_id": "T040", "account_id": "C014", "amount": 190000, "timestamp": "2025-05-03T10:20:00Z", "location": "Bank", "transaction_type": "Deposit", "merchant_id": "M107", "status": "Success"},
+  {"transaction_id": "T045", "account_id": "C015", "amount": 210000, "timestamp": "2025-05-03T10:30:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
+
   {"transaction_id": "T003", "account_id": "C003", "amount": 5000, "timestamp": "2025-05-03T09:10:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "Unknown", "status": "Success"},
   {"transaction_id": "T004", "account_id": "C003", "amount": 300, "timestamp": "2025-05-03T09:10:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
   {"transaction_id": "T005", "account_id": "C003", "amount": 1200, "timestamp": "2025-05-03T09:10:00Z", "location": "Online", "transaction_type": "Purchase", "merchant_id": "M102", "status": "Success"},
   {"transaction_id": "T006", "account_id": "C003", "amount": 7000, "timestamp": "2025-05-03T09:10:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "Unknown", "status": "Success"},
   {"transaction_id": "T007", "account_id": "C003", "amount": 450, "timestamp": "2025-05-03T09:11:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T008", "account_id": "C003", "amount": 2000, "timestamp": "2025-05-03T09:12:00Z", "location": "Online", "transaction_type": "Purchase", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T009", "account_id": "C009", "amount": 9000, "timestamp": "2025-05-03T09:40:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T012", "account_id": "C010", "amount": 600, "timestamp": "2025-05-03T09:45:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T011", "account_id": "C011", "amount": 18000, "timestamp": "2025-05-03T09:50:00Z", "location": "Online", "transaction_type": "Transfer", "merchant_id": "M104", "status": "Success"},
-  {"transaction_id": "T012", "account_id": "C012", "amount": 8000, "timestamp": "2025-05-03T09:46:00Z", "location": "Branch", "transaction_type": "Deposit", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T012", "account_id": "C013", "amount": 400, "timestamp": "2025-05-03T09:46:00Z", "location": "ATM", "transaction_type": "Withdrawal", "merchant_id": "Unknown", "status": "Success"},
-  {"transaction_id": "T012", "account_id": "C014", "amount": 1600, "timestamp": "2025-05-03T09:46:00Z", "location": "Online", "transaction_type": "Purchase", "merchant_id": "M105", "status": "Success"}
+  {"transaction_id": "T008", "account_id": "C003", "amount": 2000, "timestamp": "2025-05-03T09:12:00Z", "location": "Online", "transaction_type": "Purchase", "merchant_id": "Unknown", "status": "Success"}
 ]
+
