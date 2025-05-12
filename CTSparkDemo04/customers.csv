@@ -1,0 +1,5 @@
+customer_id,customer_fullname,email,phone,balance
+1001,Uday,Uday@gmail.com,9704203541,
+1002,james,james@gmail.com,7680047002,300000
+1003,siri,siri@gmail.com,,200000
+1004,Srav,None,9441693521,40000
