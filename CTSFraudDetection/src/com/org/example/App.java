@@ -31,8 +31,7 @@ public class App {
             // Run fraud detection
             Dataset<Row> flagged = FraudDetector.detectFraud(spark, customers, transactions);
 
-            // Save suspicious transactions only
-            FraudDetector.saveToDatabase(flagged);
+       
 
         } catch (Exception e) {
             logger.error(" Error in fraud detection process: ", e);
